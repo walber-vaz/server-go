@@ -2,43 +2,69 @@ package domain
 
 import (
 	"golang.org/x/crypto/bcrypt"
-	"server-go/internal/config/rest_errors"
 )
+
+type UserDomainInterface interface {
+	GetEmail() string
+	GetPassword() string
+	GetRole() string
+	GetPhone() string
+	GetFirstName() string
+	GetLastName() string
+	GetIsActive() bool
+
+	EncryptPassword()
+}
 
 func NewUserDomain(firstName, lastName, email, password, phone, role string, isActive bool) UserDomainInterface {
 	return &userDomain{
-		FirstName: firstName,
-		LastName:  lastName,
-		Email:     email,
-		Password:  password,
-		Phone:     phone,
-		Role:      role,
-		IsActive:  isActive,
+		firstName: firstName,
+		lastName:  lastName,
+		email:     email,
+		password:  password,
+		phone:     phone,
+		role:      role,
+		isActive:  isActive,
 	}
 }
 
 type userDomain struct {
-	FirstName string
-	LastName  string
-	Email     string
-	Password  string
-	Role      string
-	Phone     string
-	IsActive  bool
+	firstName string
+	lastName  string
+	email     string
+	password  string
+	role      string
+	phone     string
+	isActive  bool
 }
 
-type UserDomainInterface interface {
-	CreateUser() *rest_errors.RestErr
-	//UpdateUser(string) *rest_errors.RestErr
-	//FindUser(string) (*userDomain, *rest_errors.RestErr)
-	//DeleteUser(string) *rest_errors.RestErr
+func (ud *userDomain) GetEmail() string {
+	return ud.email
+}
+func (ud *userDomain) GetPassword() string {
+	return ud.password
+}
+func (ud *userDomain) GetRole() string {
+	return ud.role
+}
+func (ud *userDomain) GetPhone() string {
+	return ud.phone
+}
+func (ud *userDomain) GetFirstName() string {
+	return ud.firstName
+}
+func (ud *userDomain) GetLastName() string {
+	return ud.lastName
+}
+func (ud *userDomain) GetIsActive() bool {
+	return ud.isActive
 }
 
 func (ud *userDomain) EncryptPassword() {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(ud.Password), bcrypt.DefaultCost)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(ud.password), bcrypt.DefaultCost)
 	if err != nil {
 		panic(err)
 	}
 
-	ud.Password = string(bytes)
+	ud.password = string(bytes)
 }
