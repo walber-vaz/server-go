@@ -1,0 +1,7 @@
+bin/
+postgres/
+.editorconfig
+.env
+.git/
+.gitignore
+Makefile
