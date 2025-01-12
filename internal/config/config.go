@@ -13,8 +13,10 @@ type (
 	}
 
 	App struct {
-		Name string
-		Env  string
+		Name      string
+		Env       string
+		LogOutput string
+		LogLevel  string
 	}
 
 	DB struct {
@@ -41,8 +43,10 @@ func New() (*Container, error) {
 	}
 
 	app := &App{
-		Name: os.Getenv("APP_NAME"),
-		Env:  os.Getenv("APP_ENV"),
+		Name:      os.Getenv("APP_NAME"),
+		Env:       os.Getenv("APP_ENV"),
+		LogOutput: os.Getenv("APP_LOG_OUTPUT"),
+		LogLevel:  os.Getenv("APP_LOG_LEVEL"),
 	}
 
 	db := &DB{
