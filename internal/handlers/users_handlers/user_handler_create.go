@@ -1,12 +1,11 @@
 package users_handlers
 
 import (
-	"fmt"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"server-go/internal/config/logger"
 	"server-go/internal/config/validation"
-
-	"github.com/gin-gonic/gin"
+	"server-go/internal/domain"
 	"server-go/internal/schemas/request"
 )
 
@@ -22,6 +21,22 @@ func UsersHandlerCreate(ctx *gin.Context) {
 		return
 	}
 
-	logger.Info(fmt.Sprintf("[INFO] - Sistema Fly - Create User: %v", userRequest))
-	ctx.JSON(http.StatusOK, userRequest)
+	domainUser := domain.NewUserDomain(
+		userRequest.FirstName,
+		userRequest.LastName,
+		userRequest.Email,
+		userRequest.Password,
+		userRequest.Phone,
+		userRequest.Role,
+		userRequest.IsActive,
+	)
+
+	if err := domainUser.CreateUser(); err != nil {
+		logger.Error("[ERROR] - Sistema Fly - Create User: ", err)
+		ctx.JSON(err.Status, err)
+		return
+	}
+
+	logger.Info("[INFO] - Sistema Fly - Create User: User created successfully")
+	ctx.JSON(http.StatusCreated, gin.H{"message": "User created successfully"})
 }
