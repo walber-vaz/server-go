@@ -5,15 +5,16 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
-	"log"
 	"net/http"
 	"os"
 	"server-go/internal/config"
+	"server-go/internal/config/logger"
 	"server-go/internal/config/rest_errors"
 	"strings"
 )
 
 func InitRouter(cfg *config.HTTP) {
+	logger.Info("[INFO] - Sistema Fly - Iniciando o servidor")
 	switch cfg.Env {
 	case "test":
 		gin.SetMode(gin.TestMode)
@@ -44,12 +45,13 @@ func InitRouter(cfg *config.HTTP) {
 
 	router.NoRoute(func(c *gin.Context) {
 		err := rest_errors.NewNotFoundError("Ops! Rota não encontrada.")
+		logger.Error("[ERROR] - Sistema Fly - Rota não encontrada: ", err)
 		c.JSON(err.Status, err)
 	})
 
 	listAddress := fmt.Sprintf("%s:%s", cfg.URL, cfg.Port)
 	if err := router.Run(listAddress); err != nil {
-		log.Fatalf("failed to start server: %s", err.Error())
+		logger.Error("[ERROR] - Sistema Fly - Erro ao iniciar o servidor: ", err)
 		os.Exit(1)
 	}
 }

@@ -15,9 +15,9 @@ func UsersHandlerCreate(ctx *gin.Context) {
 	var userRequest request.UserRequest
 
 	if err := ctx.ShouldBindJSON(&userRequest); err != nil {
+		logger.Error("[ERROR] - Sistema Fly - Create User: ", err)
 		restErr := validation.ValidateUserError(err)
 
-		logger.Error("[ERROR] - Sistema Fly - Create User: ", restErr)
 		ctx.JSON(restErr.Status, restErr)
 		return
 	}
