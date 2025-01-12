@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"server-go/internal/config"
+	"server-go/internal/config/logger"
 	"server-go/internal/router"
 )
 
@@ -12,5 +13,6 @@ func main() {
 		log.Fatal(err)
 	}
 
+	logger.InitLogger(cfg.App)
 	router.InitRouter(cfg.HTTP)
 }
