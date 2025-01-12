@@ -6,6 +6,7 @@ import (
 	"server-go/internal/config/logger"
 	"server-go/internal/config/validation"
 	"server-go/internal/domain"
+	"server-go/internal/domain/service"
 	"server-go/internal/schemas/request"
 )
 
@@ -30,8 +31,9 @@ func UsersHandlerCreate(ctx *gin.Context) {
 		userRequest.Role,
 		userRequest.IsActive,
 	)
+	serviceUser := service.NewUserDomainService()
 
-	if err := domainUser.CreateUser(); err != nil {
+	if err := serviceUser.CreateUser(domainUser); err != nil {
 		logger.Error("[ERROR] - Sistema Fly - Create User: ", err)
 		ctx.JSON(err.Status, err)
 		return
