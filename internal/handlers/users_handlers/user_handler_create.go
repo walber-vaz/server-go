@@ -1,7 +1,9 @@
 package users_handlers
 
 import (
+	"fmt"
 	"net/http"
+	"server-go/internal/config/logger"
 	"server-go/internal/config/validation"
 
 	"github.com/gin-gonic/gin"
@@ -9,13 +11,17 @@ import (
 )
 
 func UsersHandlerCreate(ctx *gin.Context) {
+	logger.Info("[INFO] - Sistema Fly - Create User")
 	var userRequest request.UserRequest
 
 	if err := ctx.ShouldBindJSON(&userRequest); err != nil {
 		restErr := validation.ValidateUserError(err)
+
+		logger.Error("[ERROR] - Sistema Fly - Create User: ", restErr)
 		ctx.JSON(restErr.Status, restErr)
 		return
 	}
 
+	logger.Info(fmt.Sprintf("[INFO] - Sistema Fly - Create User: %v", userRequest))
 	ctx.JSON(http.StatusOK, userRequest)
 }
