@@ -14,6 +14,7 @@ COPY . .
 RUN CGO_ENABLED=1 GOOS=linux go build -a -installsuffix cgo -o server ./cmd/http/main.go
 
 FROM alpine:latest
+LABEL authors="w2k"
 
 WORKDIR /app
 
