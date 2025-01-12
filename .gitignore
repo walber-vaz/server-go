@@ -29,6 +29,7 @@ go.work
 .env.development
 
 bin/
+logs/
 
 # End of https://www.toptal.com/developers/gitignore/api/go
 
