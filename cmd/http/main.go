@@ -4,6 +4,8 @@ import (
 	"log"
 	"server-go/internal/config"
 	"server-go/internal/config/logger"
+	"server-go/internal/domain/service"
+	"server-go/internal/handlers/users_handlers"
 	"server-go/internal/router"
 )
 
@@ -13,6 +15,9 @@ func main() {
 		log.Fatal(err)
 	}
 
+	us := service.NewUserDomainService()
+	uh := users_handlers.NewUserHandlerInterface(us)
+
 	logger.InitLogger(cfg.App)
-	router.InitRouter(cfg.HTTP)
+	router.InitRouter(cfg.HTTP, uh)
 }
