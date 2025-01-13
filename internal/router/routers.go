@@ -1,15 +1,16 @@
 package router
 
 import (
-	"github.com/gin-gonic/gin"
 	"server-go/internal/handlers/users_handlers"
+
+	"github.com/gin-gonic/gin"
 )
 
-func initRoutes(r *gin.RouterGroup) {
+func initRoutes(r *gin.RouterGroup, uh users_handlers.UserHandlerInterface) {
 	baseUrl := r.Group("/api/v1")
 
 	users := baseUrl.Group("/users")
 	{
-		users.POST("", users_handlers.UsersHandlerCreate)
+		users.POST("", uh.UsersHandlerCreate)
 	}
 }
