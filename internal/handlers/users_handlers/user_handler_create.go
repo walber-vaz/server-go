@@ -9,6 +9,7 @@ import (
 	"server-go/internal/view"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func (uh *userHandlerInterface) UsersHandlerCreate(ctx *gin.Context) {
@@ -39,6 +40,7 @@ func (uh *userHandlerInterface) UsersHandlerCreate(ctx *gin.Context) {
 		return
 	}
 
-	logger.Info("[INFO] - Sistema Fly - Create User: User created successfully")
-	ctx.JSON(http.StatusCreated, view.DomainToResponse(domainUser))
+	responseUser := view.DomainToResponse(domainUser)
+	logger.Info("[INFO] - Sistema Fly - Create User: User created successfully", zap.Any("journey", responseUser))
+	ctx.JSON(http.StatusCreated, responseUser)
 }
