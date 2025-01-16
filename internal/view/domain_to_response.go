@@ -6,15 +6,15 @@ import (
 	"time"
 )
 
-func DomainToResponse(ud domain.UserDomainInterface) response.UserResponse {
+func DomainToResponse(userDomain domain.UserDomainInterface) response.UserResponse {
 	return response.UserResponse{
 		ID:        "1",
-		FirstName: ud.GetFirstName(),
-		LastName:  ud.GetLastName(),
-		Email:     ud.GetEmail(),
-		Phone:     ud.GetPhone(),
-		Role:      ud.GetRole(),
-		IsActive:  ud.GetIsActive(),
+		FirstName: userDomain.GetFirstName(),
+		LastName:  userDomain.GetLastName(),
+		Email:     userDomain.GetEmail(),
+		Phone:     userDomain.GetPhone(),
+		Role:      userDomain.GetRole(),
+		IsActive:  userDomain.GetIsActive(),
 		CreatedAt: time.Now().String(),
 		UpdatedAt: time.Now().String(),
 	}
