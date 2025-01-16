@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"server-go/internal/config"
+	"server-go/internal/config/database/mongodb"
 	"server-go/internal/config/logger"
 	"server-go/internal/domain/service"
 	"server-go/internal/handlers/users_handlers"
@@ -14,10 +15,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	logger.InitLogger(cfg.App)
+	mongodb.InitConnection(cfg.DB)
 
 	userService := service.NewUserDomainService()
 	userHandler := users_handlers.NewUserHandlerInterface(userService)
 
-	logger.InitLogger(cfg.App)
 	router.InitRouter(cfg.HTTP, userHandler)
 }
