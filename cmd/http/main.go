@@ -15,9 +15,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	us := service.NewUserDomainService()
-	uh := users_handlers.NewUserHandlerInterface(us)
+	userService := service.NewUserDomainService()
+	userHandler := users_handlers.NewUserHandlerInterface(userService)
 
 	logger.InitLogger(cfg.App)
-	router.InitRouter(cfg.HTTP, uh)
+	router.InitRouter(cfg.HTTP, userHandler)
 }
