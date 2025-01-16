@@ -6,9 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func NewUserHandlerInterface(sv service.UserDomainService) UserHandlerInterface {
+func NewUserHandlerInterface(service service.UserDomainService) UserHandlerInterface {
 	return &userHandlerInterface{
-		sv: sv,
+		service,
 	}
 }
 
@@ -17,5 +17,5 @@ type UserHandlerInterface interface {
 }
 
 type userHandlerInterface struct {
-	sv service.UserDomainService
+	service service.UserDomainService
 }
