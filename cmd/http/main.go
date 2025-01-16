@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"server-go/internal/config"
 	"server-go/internal/config/database/mongodb"
@@ -16,7 +17,13 @@ func main() {
 		log.Fatal(err)
 	}
 	logger.InitLogger(cfg.App)
-	mongodb.InitConnection(cfg.DB)
+
+	// Todo: Criar injetor de dependência para serviços e handlers
+	db, err := mongodb.NewMongoDBConnection(context.Background(), cfg.DB)
+	if err != nil {
+		log.Fatalf("Erro ao conectar com o MongoDB: %s", err.Error())
+		return
+	}
 
 	userService := service.NewUserDomainService()
 	userHandler := users_handlers.NewUserHandlerInterface(userService)
