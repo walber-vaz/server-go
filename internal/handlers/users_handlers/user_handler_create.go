@@ -12,7 +12,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (uh *userHandlerInterface) UsersHandlerCreate(ctx *gin.Context) {
+func (userHandlerInterface *userHandlerInterface) UsersHandlerCreate(ctx *gin.Context) {
 	logger.Info("[INFO] - Sistema Fly - Create User")
 	var userRequest request.UserRequest
 
@@ -34,7 +34,7 @@ func (uh *userHandlerInterface) UsersHandlerCreate(ctx *gin.Context) {
 		userRequest.IsActive,
 	)
 
-	if err := uh.sv.CreateUser(domainUser); err != nil {
+	if err := userHandlerInterface.service.CreateUser(domainUser); err != nil {
 		logger.Error("[ERROR] - Sistema Fly - Create User: ", err)
 		ctx.JSON(err.Status, err)
 		return
