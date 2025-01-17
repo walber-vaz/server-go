@@ -1,6 +1,8 @@
 package domain
 
 import (
+	"encoding/json"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -12,59 +14,76 @@ type UserDomainInterface interface {
 	GetFirstName() string
 	GetLastName() string
 	GetIsActive() bool
+	GetJsonValue() (string, error)
+	SetID(id string)
 
 	EncryptPassword()
 }
 
 func NewUserDomain(firstName, lastName, email, password, phone, role string, isActive bool) UserDomainInterface {
 	return &userDomain{
-		firstName: firstName,
-		lastName:  lastName,
-		email:     email,
-		password:  password,
-		phone:     phone,
-		role:      role,
-		isActive:  isActive,
+		ID:        "",
+		FirstName: firstName,
+		LastName:  lastName,
+		Email:     email,
+		Password:  password,
+		Phone:     phone,
+		Role:      role,
+		IsActive:  isActive,
 	}
 }
 
 type userDomain struct {
-	firstName string
-	lastName  string
-	email     string
-	password  string
-	role      string
-	phone     string
-	isActive  bool
+	ID        string
+	FirstName string
+	LastName  string
+	Email     string
+	Password  string
+	Role      string
+	Phone     string
+	IsActive  bool
+}
+
+func (ud *userDomain) SetID(id string) {
+	ud.ID = id
+}
+
+func (ud *userDomain) GetJsonValue() (string, error) {
+	data, err := json.Marshal(ud)
+	if err != nil {
+		return "", err
+	}
+
+	return string(data), nil
 }
 
 func (ud *userDomain) GetEmail() string {
-	return ud.email
+	return ud.Email
 }
 func (ud *userDomain) GetPassword() string {
-	return ud.password
+	return ud.Password
 }
 func (ud *userDomain) GetRole() string {
-	return ud.role
+	return ud.Role
 }
 func (ud *userDomain) GetPhone() string {
-	return ud.phone
+	return ud.Phone
 }
 func (ud *userDomain) GetFirstName() string {
-	return ud.firstName
+	return ud.FirstName
 }
 func (ud *userDomain) GetLastName() string {
-	return ud.lastName
+	return ud.LastName
 }
 func (ud *userDomain) GetIsActive() bool {
-	return ud.isActive
+	return ud.IsActive
 }
 
 func (ud *userDomain) EncryptPassword() {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(ud.password), bcrypt.DefaultCost)
+	bytes, err := bcrypt.GenerateFromPassword([]byte(ud.Password), bcrypt.DefaultCost)
 	if err != nil {
 		panic(err)
 	}
 
-	ud.password = string(bytes)
+	ud.Password = string(bytes)
 }
